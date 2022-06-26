@@ -51,7 +51,8 @@ class MoreMenuButton extends StatelessWidget {
         // push to different routes based on selected option
         switch (option) {
           case PopupMenuOption.signIn:
-            context.pushNamed(AppRoute.signIn.name);
+            context.pushNamed(AppRoute.signIn
+                .name); // go discard current stack navigation, push keep current navigation stack
             break;
           case PopupMenuOption.orders:
             context.pushNamed(AppRoute.orders.name);
