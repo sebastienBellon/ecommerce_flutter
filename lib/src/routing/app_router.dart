@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/features/not_found/not_found_screen.dart';
 import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,6 +82,7 @@ final goRouter = GoRouter(
       ],
     ),
   ],
+  errorBuilder: (context,state) => const NotFoundScreen(),
   // turn off the # in the URLs on the web
   urlPathStrategy: UrlPathStrategy.path,
 );
