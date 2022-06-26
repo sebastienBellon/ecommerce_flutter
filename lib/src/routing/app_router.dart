@@ -10,10 +10,12 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => const ProductsListScreen(),
-    ),
-    GoRoute(
-      path: '/cart',
-      builder: (context, state) => const ShoppingCartScreen(),
+      routes: [
+        GoRoute(
+          path: 'cart',
+          builder: (context, state) => const ShoppingCartScreen(),
+        ),
+      ],
     ),
   ],
   // turn off the # in the URLs on the web
