@@ -10,11 +10,13 @@ final goRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const ProductsListScreen(),
+      builder: (context, state) =>
+          const ProductsListScreen(), // builder is nice if you want default transition
       routes: [
         GoRoute(
           path: 'cart',
           pageBuilder: (context, state) => MaterialPage(
+            // if you want to customize transition use pageBuilder instead of builder
             key: state.pageKey,
             fullscreenDialog: true,
             child: const ShoppingCartScreen(),
