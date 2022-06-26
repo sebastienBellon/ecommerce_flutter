@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
           builder: (context, state) => const ProductsListScreen(),
         ),
       ],
+      // turn off the # in the URLs on the web
+      urlPathStrategy: UrlPathStrategy.path,
     );
     return MaterialApp.router(
       routerDelegate: goRouter.routerDelegate,
