@@ -8,18 +8,27 @@ import 'package:ecommerce_app/src/features/shopping_cart/shopping_cart_screen.da
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_screen.dart';
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_state.dart';
 
+enum AppRoute {
+  home,
+  cart,
+  orders,
+  account,
+  signIn,
+}
+
 final goRouter = GoRouter(
   initialLocation: '/',
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
       path: '/',
-      name: 'home',
+      name: AppRoute.home.name,
       builder: (context, state) =>
           const ProductsListScreen(), // builder is nice if you want default transition
       routes: [
         GoRoute(
           path: 'cart',
+          name: AppRoute.cart.name,
           pageBuilder: (context, state) => MaterialPage(
             // if you want to customize transition use pageBuilder instead of builder
             key: state.pageKey,
@@ -29,6 +38,7 @@ final goRouter = GoRouter(
         ),
         GoRoute(
           path: 'orders',
+          name: AppRoute.orders.name,
           pageBuilder: (context, state) => MaterialPage(
             // if you want to customize transition use pageBuilder instead of builder
             key: state.pageKey,
@@ -38,6 +48,7 @@ final goRouter = GoRouter(
         ),
         GoRoute(
           path: 'account',
+          name: AppRoute.account.name,
           pageBuilder: (context, state) => MaterialPage(
             // if you want to customize transition use pageBuilder instead of builder
             key: state.pageKey,
@@ -47,6 +58,7 @@ final goRouter = GoRouter(
         ),
         GoRoute(
           path: 'signIn',
+          name: AppRoute.signIn.name,
           pageBuilder: (context, state) => MaterialPage(
             // if you want to customize transition use pageBuilder instead of builder
             key: state.pageKey,
