@@ -9,6 +9,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final goRouter = GoRouter(
+      initialLocation: '/',
+      debugLogDiagnostics: true,
       routes: [
         GoRoute(
           path: '/',
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
       // turn off the # in the URLs on the web
       urlPathStrategy: UrlPathStrategy.path,
     );
+
     return MaterialApp.router(
       routerDelegate: goRouter.routerDelegate,
       routeInformationParser: goRouter.routeInformationParser,
