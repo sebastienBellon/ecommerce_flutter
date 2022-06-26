@@ -31,7 +31,7 @@ class ProductsGrid extends StatelessWidget {
               final product = products[index];
               return ProductCard(
                   product: product,
-                  onPressed: () => context.goNamed(
+                  onPressed: () => context.pushNamed(
                         AppRoute.product.name,
                         params: {
                           'id': product.id,
