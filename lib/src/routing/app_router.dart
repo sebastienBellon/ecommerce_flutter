@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +15,7 @@ enum AppRoute {
   orders,
   account,
   signIn,
+  product,
 }
 
 final goRouter = GoRouter(
@@ -67,6 +69,14 @@ final goRouter = GoRouter(
               formType: EmailPasswordSignInFormType.signIn,
             ),
           ),
+        ),
+        GoRoute(
+          path: 'product/:id',
+          name: AppRoute.product.name,
+          builder: (context, state) {
+            final productId = state.params['id']!; // for safety we had a null safety operator to indicate that id cannot be null
+            return ProductScreen(productId: productId);
+          },
         ),
       ],
     ),
