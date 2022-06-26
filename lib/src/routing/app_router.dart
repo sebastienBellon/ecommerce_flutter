@@ -1,22 +1,25 @@
-import 'package:ecommerce_app/src/features/not_found/not_found_screen.dart';
-import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import 'package:ecommerce_app/src/features/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/features/account/account_screen.dart';
+import 'package:ecommerce_app/src/features/checkout/checkout_screen.dart';
+import 'package:ecommerce_app/src/features/leave_review_page/leave_review_screen.dart';
+import 'package:ecommerce_app/src/features/not_found/not_found_screen.dart';
 import 'package:ecommerce_app/src/features/orders_list/orders_list_screen.dart';
+import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
+import 'package:ecommerce_app/src/features/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/features/shopping_cart/shopping_cart_screen.dart';
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_screen.dart';
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_state.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 enum AppRoute {
   home,
+  product,
+  leavereview,
   cart,
+  checkout,
   orders,
   account,
   signIn,
-  product,
 }
 
 final goRouter = GoRouter(
@@ -26,9 +29,30 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/',
       name: AppRoute.home.name,
-      builder: (context, state) =>
-          const ProductsListScreen(), // builder is nice if you want default transition
+      builder: (context, state) => const ProductsListScreen(),
       routes: [
+        GoRoute(
+          path: 'product/:id',
+          name: AppRoute.product.name,
+          builder: (context, state) {
+            final productId = state.params['id']!; // id cannot be null
+            return ProductScreen(productId: productId);
+          },
+          routes: [
+            GoRoute(
+              path: 'review',
+              name: AppRoute.leavereview.name,
+              pageBuilder: (context, state) {
+                final productId = state.params['id']!;
+                return MaterialPage(
+                  key: state.pageKey,
+                  fullscreenDialog: true,
+                  child: LeaveReviewScreen(productId: productId),
+                );
+              },
+            ),
+          ],
+        ),
         GoRoute(
           path: 'cart',
           name: AppRoute.cart.name,
@@ -38,6 +62,19 @@ final goRouter = GoRouter(
             fullscreenDialog: true,
             child: const ShoppingCartScreen(),
           ),
+          routes: [
+            GoRoute(
+              path: 'checkout',
+              name: AppRoute.checkout.name,
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  key: state.pageKey,
+                  fullscreenDialog: true,
+                  child: const CheckoutScreen(),
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: 'orders',
@@ -71,18 +108,10 @@ final goRouter = GoRouter(
             ),
           ),
         ),
-        GoRoute(
-          path: 'product/:id',
-          name: AppRoute.product.name,
-          builder: (context, state) {
-            final productId = state.params['id']!; // for safety we had a null safety operator to indicate that id cannot be null
-            return ProductScreen(productId: productId);
-          },
-        ),
       ],
     ),
   ],
-  errorBuilder: (context,state) => const NotFoundScreen(),
+  errorBuilder: (context, state) => const NotFoundScreen(),
   // turn off the # in the URLs on the web
   urlPathStrategy: UrlPathStrategy.path,
 );
