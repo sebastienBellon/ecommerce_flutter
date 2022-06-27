@@ -7,12 +7,27 @@ class FakeProductsRepository {
   // singleton to avoid recreation of this object
   static FakeProductsRepository instance = FakeProductsRepository._();
 
+  final List<Product> _products = kTestProducts;
+
   // method to retrieve data
   List<Product> getProductList() {
-    return kTestProducts;
+    return _products;
   }
 
   Product? getProduct(String id) {
-    return kTestProducts.firstWhere((product) => product.id == id);
+    return _products.firstWhere((product) => product.id == id);
+  }
+
+  Future<List<Product>> fetchProductList() {
+    return Future.value(_products);
+  }
+
+  Stream<List<Product>> watchProductList() {
+    return Stream.value(_products);
+  }
+
+  Stream<Product?> watchProduct(String id) {
+    return watchProductList()
+        .map((product) => product.firstWhere((product) => product.id == id));
   }
 }
