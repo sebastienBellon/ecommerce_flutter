@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecommerce_app/src/app.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   // * For more info on error handling, see:
@@ -10,7 +11,11 @@ void main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     // * Entry point of the app
-    runApp(const MyApp());
+    runApp(
+      const ProviderScope(
+        child: MyApp(),
+      ),
+    );
 
     // * This code will present some error UI if any uncaught exception happens
     FlutterError.onError = (FlutterErrorDetails details) {
