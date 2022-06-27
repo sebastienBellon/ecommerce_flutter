@@ -14,12 +14,15 @@ class FakeProductsRepository {
     return _products.firstWhere((product) => product.id == id);
   }
 
-  Future<List<Product>> fetchProductList() {
+  Future<List<Product>> fetchProductList() async {
+    await Future.delayed(const Duration(seconds: 2));
     return Future.value(_products);
+    // throw Exception('Connection failed');
   }
 
-  Stream<List<Product>> watchProductList() {
-    return Stream.value(_products);
+  Stream<List<Product>> watchProductList() async* {
+    await Future.delayed(const Duration(seconds: 2));
+    yield _products;
   }
 
   Stream<Product?> watchProduct(String id) {
@@ -35,4 +38,9 @@ final productsRepositoryProvider = Provider<FakeProductsRepository>((ref) {
 final productsListStreamProvider = StreamProvider<List<Product>>((ref) {
   final productRepository = ref.watch(productsRepositoryProvider);
   return productRepository.watchProductList();
+});
+
+final productsListFutureProvider = FutureProvider<List<Product>>((ref) {
+  final productRepository = ref.watch(productsRepositoryProvider);
+  return productRepository.fetchProductList();
 });
