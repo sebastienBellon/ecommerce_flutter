@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/src/constants/test_products.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /*
@@ -53,7 +52,6 @@ final productsRepositoryProvider = Provider<FakeProductsRepository>((ref) {
 
 final productsListStreamProvider =
     StreamProvider.autoDispose<List<Product>>((ref) {
-  debugPrint('created productsListStreamProvider');
   final productRepository = ref.watch(productsRepositoryProvider);
   return productRepository.watchProductList();
 });
@@ -66,11 +64,7 @@ final productsListFutureProvider =
 
 final productProvider = StreamProvider.family.autoDispose<Product?, String>(
   (ref, id) {
-    debugPrint('created productProvider with id: $id');
-    ref.onDispose(() => debugPrint('destroyed productProvider with id: $id'));
     final productRepository = ref.watch(productsRepositoryProvider);
     return productRepository.watchProduct(id);
   },
-  disposeDelay: const Duration(seconds: 10),
-  cacheTime: const Duration(seconds: 10),
 );
