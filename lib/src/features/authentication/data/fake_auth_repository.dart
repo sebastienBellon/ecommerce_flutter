@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
+import 'package:ecommerce_app/src/utils/in_memory_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 abstract class AuthRepository {
@@ -40,31 +41,49 @@ class FirebaseAuthRepository implements AuthRepository {
 }
 
 class FakeAuthRepository implements AuthRepository {
-  @override
-  Stream<AppUser?> authStateChanges() => Stream.value(null); // TODO: update
+  final _authState = InMemoryStore<AppUser?>(null);
 
   @override
-  AppUser? get currentUser => null; // TODO: update
+  Stream<AppUser?> authStateChanges() => _authState.stream;
+
+  @override
+  AppUser? get currentUser => _authState.value;
+
+  void _createNewUser(String email) {
+    _authState.value = AppUser(
+      uid: email.split('').reversed.join(),
+      email: email,
+    );
+  }
+
+  void dispose() => _authState.close();
 
   @override
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    // TODO: Implement
+    if (currentUser == null) {
+      _createNewUser(email);
+    }
   }
+
   @override
   Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
-    // TODO: Implement
+    if (currentUser == null) {
+      _createNewUser(email);
+    }
   }
 
   @override
   Future<void> signOut() async {
-    // TODO: Implement
+    _authState.value = null;
   }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  const realBackend = String.fromEnvironment('useFireBaseBE') == 'true';
-  return realBackend ? FirebaseAuthRepository() : FakeAuthRepository();
+  final auth = FakeAuthRepository();
+  // close the stream when not needed anymore
+  ref.onDispose(() => auth.dispose());
+  return auth;
 });
 
 final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>((ref) {
